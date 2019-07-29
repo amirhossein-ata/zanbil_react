@@ -5,12 +5,14 @@ import App from "./App";
 import Store from "./scripts/core/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
+import { createBrowserHistory } from "history";
 
 const Router = (
   <BrowserRouter>
     <App />
   </BrowserRouter>
 );
+
 const { store, persistor } = Store();
 const RootComponent = (
   <Provider store={store}>

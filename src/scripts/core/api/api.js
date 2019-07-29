@@ -13,23 +13,14 @@ export const publicApi = () =>
     timeout: 1000
   });
 
-export const post = (
-  url,
-  body,
-  token,
-  thenCallback,
-  catchCallback,
-  protectedRoute
-) => {
-  protectedRoute
-    ? protectedApi(token)
-        .post(url, body)
-        .then(thenCallback)
-        .catch(catchCallback)
+export const post = (url, body, token, protectedRoute) => {
+  return protectedRoute
+    ? protectedApi(token).post(url, body)
     : publicApi()
         .post(url, body)
-        .then(thenCallback)
-        .catch(catchCallback);
+        .then(response => {
+          return response.data;
+        });
 };
 
 export const get = (
