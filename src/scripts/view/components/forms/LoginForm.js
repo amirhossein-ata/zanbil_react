@@ -74,6 +74,7 @@ export default ({ dispatch, auth, history }) => {
                 />
                 <InputLabel required> رمز عبور</InputLabel>
                 <TextField
+                  type="password"
                   id="outlined-name"
                   className={classes.textField}
                   value={password}
