@@ -31,3 +31,22 @@ export const post = (
         .then(thenCallback)
         .catch(catchCallback);
 };
+
+export const get = (
+  url,
+  params,
+  token,
+  thenCallback,
+  catchCallback,
+  protectedRoute
+) => {
+  protectedRoute
+    ? protectedApi(token)
+        .get(url, params)
+        .then(thenCallback)
+        .catch(catchCallback)
+    : publicApi()
+        .post(url, params)
+        .then(thenCallback)
+        .catch(catchCallback);
+};
