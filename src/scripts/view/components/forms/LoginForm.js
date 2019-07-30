@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
@@ -14,6 +15,9 @@ const useStyles = makeStyles(theme => ({
     width: "700px"
   },
   paper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     padding: theme.spacing(2),
     marginTop: theme.spacing(10)
   },
@@ -21,18 +25,17 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2)
   },
   textField: {
-    width: "80%",
     textAlign: "right",
     marginBottom: theme.spacing(3)
   },
   formInput: {
-    marginRight: "20%"
+    // marginRight: "20%"
   },
   button: {
-    marginRight: "75%"
+    // marginRight: "75%"
   },
   header: {
-    marginRight: "20%",
+    // marginRight: "20%",
     marginBottom: theme.spacing(5)
   }
 }));
@@ -55,7 +58,6 @@ export default ({ dispatch, auth, history }) => {
     dispatch(loginRequest({ email, password }));
   };
   const classes = useStyles();
-  console.log();
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
@@ -91,6 +93,7 @@ export default ({ dispatch, auth, history }) => {
                 ورود
               </Button>
             </Paper>
+            <Link to="/signup">ساخت حساب جدید</Link>
           </Grid>
         </Grid>
       </Grid>

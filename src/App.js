@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { Switch, Route, Redirect } from "react-router-dom";
 import "./App.scss";
 import Home from "./scripts/view/pages/home/Home";
@@ -7,7 +8,7 @@ import BusinessPage from "./scripts/view/pages/business/Business";
 import ServicePage from "./scripts/view/pages/service/Service";
 import Navbar from "./scripts/view/components/Navbar";
 import Login from "./scripts/view/components/forms/LoginForm";
-import { withRouter } from "react-router-dom";
+import Signup from "./scripts/view/components/forms/SignupForm";
 
 class App extends React.Component {
   render() {
@@ -39,6 +40,12 @@ class App extends React.Component {
               path="/login"
               component={() => (
                 <Login dispatch={dispatch} history={history} auth={auth} />
+              )}
+            />
+            <Route
+              path="/signup"
+              component={() => (
+                <Signup dispatch={dispatch} history={history} auth={auth} />
               )}
             />
             <PrivateRoute
