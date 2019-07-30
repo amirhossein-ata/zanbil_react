@@ -9,6 +9,7 @@ import ServicePage from "./scripts/view/pages/service/Service";
 import Navbar from "./scripts/view/components/Navbar";
 import Login from "./scripts/view/components/forms/LoginForm";
 import Signup from "./scripts/view/components/forms/SignupForm";
+import AddBusiness from "./scripts/view/pages/business/AddBusinessForm";
 
 class App extends React.Component {
   render() {
@@ -50,11 +51,21 @@ class App extends React.Component {
             />
             <PrivateRoute
               path="/business"
-              component={() => <BusinessPage dispatch={dispatch} />}
+              component={() => <BusinessPage history={history} />}
             />
-            <Route
+            <PrivateRoute
               path="/service"
               component={() => <ServicePage dispatch={dispatch} />}
+            />
+            <PrivateRoute
+              path="/add_business"
+              component={() => (
+                <AddBusiness
+                  dispatch={dispatch}
+                  history={history}
+                  auth={auth}
+                />
+              )}
             />
           </Switch>
         </div>

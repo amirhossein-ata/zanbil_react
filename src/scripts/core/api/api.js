@@ -13,9 +13,13 @@ export const publicApi = () =>
     timeout: 1000
   });
 
-export const post = (url, body, token, protectedRoute) => {
-  return protectedRoute
-    ? protectedApi(token).post(url, body)
+export const post = (url, body, token, isProtected) => {
+  return isProtected
+    ? protectedApi(token)
+        .post(url, body)
+        .then(response => {
+          return response.data;
+        })
     : publicApi()
         .post(url, body)
         .then(response => {
@@ -23,21 +27,16 @@ export const post = (url, body, token, protectedRoute) => {
         });
 };
 
-export const get = (
-  url,
-  params,
-  token,
-  thenCallback,
-  catchCallback,
-  protectedRoute
-) => {
-  protectedRoute
+export const get = (url, params, token, isProtected) => {
+  return isProtected
     ? protectedApi(token)
         .get(url, params)
-        .then(thenCallback)
-        .catch(catchCallback)
+        .then(response => {
+          return response.data;
+        })
     : publicApi()
-        .post(url, params)
-        .then(thenCallback)
-        .catch(catchCallback);
+        .get(url, params)
+        .then(response => {
+          return response.data;
+        });
 };
