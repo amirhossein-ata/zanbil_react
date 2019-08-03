@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { get_businesses } from "../../../core/actions/business";
@@ -30,8 +30,12 @@ const useStyles = makeStyles({
   }
 });
 
-const BusinessPage = ({ dispatch, history, auth, business }) => {
+const AllBusinessesPage = ({ dispatch, auth, business, match }) => {
+  useEffect(() => {
+    dispatch(get_businesses(auth.token));
+  }, []);
   const classes = useStyles();
+  console.log("match in all business: ", match);
   return (
     <div>
       <Link to="/add_business">
@@ -43,10 +47,11 @@ const BusinessPage = ({ dispatch, history, auth, business }) => {
           ایجاد کسب و کار
         </Button>
       </Link>
-      <Grid container spacing={2}>
+
+      <Grid container spacing={2} justify="center">
         {business.state === "loaded" &&
           business.businesses.map((business, index) => (
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid item xs={10} md={6} lg={4} key={index}>
               <Card className={classes.card}>
                 <CardContent>
                   <h4>{business.name}</h4>
@@ -71,4 +76,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(BusinessPage);
+export default connect(mapStateToProps)(AllBusinessesPage);

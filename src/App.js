@@ -4,29 +4,29 @@ import { withRouter } from "react-router-dom";
 import { Switch, Route, Redirect } from "react-router-dom";
 import "./App.scss";
 import Home from "./scripts/view/pages/home/Home";
-import BusinessPage from "./scripts/view/pages/business/Business";
+import AllBusinessesPage from "./scripts/view/pages/business/AllBusinesses";
 import ServicePage from "./scripts/view/pages/service/Service";
 import Navbar from "./scripts/view/components/Navbar";
 import Login from "./scripts/view/components/forms/LoginForm";
 import Signup from "./scripts/view/components/forms/SignupForm";
 import AddBusiness from "./scripts/view/pages/business/AddBusinessForm";
+import BusinessDetailPage from "./scripts/view/pages/business/BusinessDetails";
 
+export const PrivateRoute = ({ component: Component, auth, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      auth && auth.isAuthenticated === true ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to="/login" />
+      )
+    }
+  />
+);
 class App extends React.Component {
   render() {
-    const { dispatch, auth, history } = this.props;
-
-    const PrivateRoute = ({ component: Component, ...rest }) => (
-      <Route
-        {...rest}
-        render={props =>
-          auth && auth.isAuthenticated === true ? (
-            <Component {...props} />
-          ) : (
-            <Redirect to="/login" />
-          )
-        }
-      />
-    );
+    const { dispatch, auth, history, match } = this.props;
     return (
       <div>
         <Navbar dispatch={dispatch} history={history} auth={auth} />
@@ -49,9 +49,10 @@ class App extends React.Component {
                 <Signup dispatch={dispatch} history={history} auth={auth} />
               )}
             />
-            <PrivateRoute
+            <Route
               path="/business"
-              component={() => <BusinessPage history={history} />}
+              component={() => <AllBusinessesPage history={history} />}
+              auth={auth}
             />
             <PrivateRoute
               path="/service"
@@ -66,6 +67,12 @@ class App extends React.Component {
                   auth={auth}
                 />
               )}
+              auth={auth}
+            />
+            <PrivateRoute
+              path="/business_detail/:businessID"
+              auth={auth}
+              component={() => <BusinessDetailPage dispatch={dispatch} />}
             />
           </Switch>
         </div>
