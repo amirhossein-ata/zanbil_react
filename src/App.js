@@ -26,7 +26,7 @@ export const PrivateRoute = ({ component: Component, auth, ...rest }) => (
 );
 class App extends React.Component {
   render() {
-    const { dispatch, auth, history, match } = this.props;
+    const { dispatch, auth, history } = this.props;
     return (
       <div>
         <Navbar dispatch={dispatch} history={history} auth={auth} />
@@ -55,10 +55,6 @@ class App extends React.Component {
               auth={auth}
             />
             <PrivateRoute
-              path="/service"
-              component={() => <ServicePage dispatch={dispatch} />}
-            />
-            <PrivateRoute
               path="/add_business"
               component={() => (
                 <AddBusiness
@@ -75,6 +71,11 @@ class App extends React.Component {
               component={() => (
                 <BusinessDetailPage dispatch={dispatch} auth={auth} />
               )}
+            />
+            <PrivateRoute
+              path="/service/:serviceID"
+              auth={auth}
+              component={() => <ServicePage dispatch={dispatch} />}
             />
           </Switch>
         </div>
