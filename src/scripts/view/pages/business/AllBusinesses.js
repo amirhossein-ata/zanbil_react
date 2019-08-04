@@ -58,10 +58,12 @@ const AllBusinessesPage = ({ dispatch, auth, business, match }) => {
                   <p>{business.description}</p>
                 </CardContent>
                 <CardActions>
-                  <Button color="primary" variant="contained" size="small">
-                    {" "}
-                    مشاهده کسب و کار
-                  </Button>
+                  <Link to={`/business_detail/${business.id}`}>
+                    <Button color="primary" variant="contained" size="small">
+                      {" "}
+                      مشاهده کسب و کار
+                    </Button>
+                  </Link>
                 </CardActions>
               </Card>
             </Grid>

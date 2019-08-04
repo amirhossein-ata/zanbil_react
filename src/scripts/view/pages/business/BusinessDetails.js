@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { get_businesses } from "../../../core/actions/business";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
+
+import Employers from "./Employers";
+import Services from "./Services";
 
 const useStyles = makeStyles({
   card: {
@@ -28,49 +31,68 @@ const useStyles = makeStyles({
     margin: "2em"
   },
   services: {
-    marginTop: "2em"
+    marginTop: "2em",
+    marginBottom: "2em"
   },
-  header: {}
+  header: {},
+  hr: {
+    marginTop: "2.5em"
+  }
 });
 
-const BusinessDetails = ({ business, match }) => {
+const BusinessDetails = ({ dispatch, business, match, auth }) => {
+  useEffect(() => {
+    dispatch(get_businesses(auth.token));
+  }, []);
   const classes = useStyles();
   const { businesses, state } = business;
   const businessDetails = businesses.find(
     business => business.id === parseInt(match.params.businessID, 10)
   );
   const services = businessDetails.services.data;
+  const employers = businessDetails.employers.data;
   return (
     <div>
-      <Grid container justify="center">
-        <Grid item lg={10}>
-          <Card className={classes.card}>
-            <CardContent>
-              <h4>{businessDetails.name}</h4>
-              <p>{businessDetails.description}</p>
-            </CardContent>
-            <CardActions />
-          </Card>
-        </Grid>
-      </Grid>
-      <Grid className={classes.services} container justify="center">
-        <Grid item md={10}>
-          <h4 className={classes.header}>سرویس‌ها</h4>
-          <Grid container justify="space-between">
-            {services.map((service, index) => (
-              <Grid item lg={4} md={5} xs={10}>
-                <Card className={classes.card} key={index}>
-                  <CardContent>
-                    <h4>{service.name}</h4>
-                    <p>{service.description}</p>
-                  </CardContent>
-                  <CardActions />
-                </Card>
-              </Grid>
-            ))}
+      <br />
+      {state === "loaded" && (
+        <div>
+          <Grid container justify="center">
+            <Grid item lg={10}>
+              <Card className={classes.card}>
+                <CardContent>
+                  <h4>{businessDetails.name}</h4>
+                  <p>{businessDetails.description}</p>
+                </CardContent>
+                <CardActions />
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-      </Grid>
+          <Grid className={classes.services} container justify="center">
+            <Services
+              services={services}
+              dispatch={dispatch}
+              auth={auth}
+              employers={employers}
+              businessID={parseInt(match.params.businessID, 10)}
+            />
+          </Grid>
+          <Grid container justify="center">
+            <Grid item md={10}>
+              <hr className={classes.hr} />
+            </Grid>
+          </Grid>
+
+          <Grid className={classes.services} container justify="center">
+            <Grid item md={10}>
+              <Employers
+                employers={employers}
+                dispatch={dispatch}
+                businessID={parseInt(match.params.businessID, 10)}
+              />
+            </Grid>
+          </Grid>
+        </div>
+      )}
     </div>
   );
 };

@@ -72,7 +72,9 @@ class App extends React.Component {
             <PrivateRoute
               path="/business_detail/:businessID"
               auth={auth}
-              component={() => <BusinessDetailPage dispatch={dispatch} />}
+              component={() => (
+                <BusinessDetailPage dispatch={dispatch} auth={auth} />
+              )}
             />
           </Switch>
         </div>
