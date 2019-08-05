@@ -11,6 +11,7 @@ import Login from "./scripts/view/components/forms/LoginForm";
 import Signup from "./scripts/view/components/forms/SignupForm";
 import AddBusiness from "./scripts/view/pages/business/AddBusinessForm";
 import BusinessDetailPage from "./scripts/view/pages/business/BusinessDetails";
+import ProfilePage from "./scripts/view/pages/profile/Profile";
 
 export const PrivateRoute = ({ component: Component, auth, ...rest }) => (
   <Route
@@ -76,6 +77,11 @@ class App extends React.Component {
               path="/service/:serviceID"
               auth={auth}
               component={() => <ServicePage dispatch={dispatch} auth={auth} />}
+            />
+            <PrivateRoute
+              path="/profile/"
+              auth={auth}
+              component={() => <ProfilePage dispatch={dispatch} auth={auth} />}
             />
           </Switch>
         </div>
