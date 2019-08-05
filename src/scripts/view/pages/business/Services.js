@@ -94,7 +94,7 @@ const AddServiceForm = ({
           description,
           address,
           business_id: businessID,
-          employer_id: 1,
+          employer_id: employer,
           start_day,
           end_day,
           start_middle_rest,

@@ -75,7 +75,7 @@ class App extends React.Component {
             <PrivateRoute
               path="/service/:serviceID"
               auth={auth}
-              component={() => <ServicePage dispatch={dispatch} />}
+              component={() => <ServicePage dispatch={dispatch} auth={auth} />}
             />
           </Switch>
         </div>
