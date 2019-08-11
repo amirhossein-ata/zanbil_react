@@ -70,40 +70,28 @@ const creatTimetable = ({
   gap_length
 }) => {
   let result = [];
-  let temp = moment(start_day, "h:mm");
-  const end = moment(end_day, "h:mm");
+  let temp = moment(start_day, "YYYY-MM-DD-h-mm");
+  const end = moment(end_day, "YYYY-MM-DD-h-mm");
   const time_length_int = parseInt(time_length);
   const gap_length_int = parseInt(gap_length);
-  while (temp < end) {
-    let hour = temp.hour();
-    let minute = temp.minute();
-    if (minute + time_length_int >= 60) {
-      hour++;
-      minute = minute + time_length_int - 60;
-    } else {
-      minute = minute + time_length_int;
-    }
-    const end_sans =
-      minute === 0 ? "" + hour + ":" + minute + "0" : "" + hour + ":" + minute;
-    const start_sans =
-      temp.minute() === 0
-        ? "" + temp.hour() + ":" + temp.minute() + "0"
-        : "" + temp.hour() + ":" + temp.minute();
-    if (
-      temp < moment(start_middle_rest, "h:mm") ||
-      temp > moment(end_middle_rest, "h:mm")
-    ) {
-      result.push([start_sans, end_sans]);
-    }
-    if (minute + gap_length_int >= 60) {
-      hour++;
-      minute = minute + gap_length_int - 60;
-    } else {
-      minute = minute + gap_length_int;
-    }
 
-    temp = "" + hour + ":" + minute;
-    temp = moment(temp, "h:mm");
+  while (temp < end) {
+    const start_sans = temp;
+    const end_sans = moment(temp).add(time_length_int, "minutes");
+    if (
+      temp < moment(start_middle_rest, "YYYY-MM-DD-h-mm") ||
+      temp > moment(end_middle_rest, "YYYY-MM-DD-h-mm")
+    ) {
+      result.push([
+        start_sans.minute() !== 0
+          ? start_sans.hour() + ":" + start_sans.minute()
+          : start_sans.hour() + ":" + start_sans.minute() + "0",
+        end_sans.minute() !== 0
+          ? end_sans.hour() + ":" + end_sans.minute()
+          : end_sans.hour() + ":" + end_sans.minute() + "0"
+      ]);
+    }
+    temp = moment(end_sans).add(gap_length_int, "minutes");
   }
   return result;
 };

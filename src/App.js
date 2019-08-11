@@ -79,7 +79,7 @@ class App extends React.Component {
               component={() => <ServicePage dispatch={dispatch} auth={auth} />}
             />
             <PrivateRoute
-              path="/profile/"
+              path="/profile"
               auth={auth}
               component={() => <ProfilePage dispatch={dispatch} auth={auth} />}
             />
