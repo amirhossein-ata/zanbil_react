@@ -13,12 +13,21 @@ import AddBusiness from "./scripts/view/pages/business/AddBusinessForm";
 import BusinessDetailPage from "./scripts/view/pages/business/BusinessDetails";
 import ProfilePage from "./scripts/view/pages/profile/Profile";
 
-export const PrivateRoute = ({ component: Component, auth, ...rest }) => (
+export const PrivateRoute = ({
+  component: Component,
+  dispatch,
+  history,
+  auth,
+  ...rest
+}) => (
   <Route
     {...rest}
     render={props =>
       auth && auth.isAuthenticated === true ? (
-        <Component {...props} />
+        <div>
+          <Navbar dispatch={dispatch} history={history} auth={auth} />
+          <Component {...props} />
+        </div>
       ) : (
         <Redirect to="/login" />
       )
@@ -30,7 +39,6 @@ class App extends React.Component {
     const { dispatch, auth, history } = this.props;
     return (
       <div>
-        <Navbar dispatch={dispatch} history={history} auth={auth} />
         <div>
           <Switch>
             <Route
@@ -38,22 +46,12 @@ class App extends React.Component {
               path="/"
               component={() => <Home dispatch={dispatch} />}
             />
-            <Route
-              path="/login"
-              component={() => (
-                <Login dispatch={dispatch} history={history} auth={auth} />
-              )}
-            />
-            <Route
-              path="/signup"
-              component={() => (
-                <Signup dispatch={dispatch} history={history} auth={auth} />
-              )}
-            />
-            <Route
+            <PrivateRoute
               path="/business"
               component={() => <AllBusinessesPage history={history} />}
               auth={auth}
+              dispatch={dispatch}
+              history={history}
             />
             <PrivateRoute
               path="/add_business"
@@ -65,23 +63,31 @@ class App extends React.Component {
                 />
               )}
               auth={auth}
+              dispatch={dispatch}
+              history={history}
             />
             <PrivateRoute
               path="/business_detail/:businessID"
-              auth={auth}
               component={() => (
                 <BusinessDetailPage dispatch={dispatch} auth={auth} />
               )}
+              auth={auth}
+              dispatch={dispatch}
+              history={history}
             />
             <PrivateRoute
               path="/service/:serviceID"
-              auth={auth}
               component={() => <ServicePage dispatch={dispatch} auth={auth} />}
+              auth={auth}
+              dispatch={dispatch}
+              history={history}
             />
             <PrivateRoute
               path="/profile"
-              auth={auth}
               component={() => <ProfilePage dispatch={dispatch} auth={auth} />}
+              auth={auth}
+              dispatch={dispatch}
+              history={history}
             />
           </Switch>
         </div>
